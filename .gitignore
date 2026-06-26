@@ -15,6 +15,16 @@ dist-ssr
 # Superpowers SDD scratch
 .superpowers/
 
+# Claude / AI assistant files
+.claude/
+.claude.json
+.claude.local.json
+CLAUDE.md
+CLAUDE.local.md
+.mcp.json
+.cursor/
+.cursorrules
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

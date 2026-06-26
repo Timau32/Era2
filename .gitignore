@@ -17,6 +17,7 @@ dist-ssr
 
 # Superpowers SDD scratch
 .superpowers/
+docs/superpowers/
 
 # Claude / AI assistant files
 .claude/

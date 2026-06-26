@@ -19,6 +19,26 @@ export function StatusBar() {
   const containerCls =
     'fixed z-40 inset-x-0 bottom-0 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:inset-x-auto sm:bottom-6 sm:right-6 sm:p-0 sm:w-80'
 
+  /**
+   * Интерактивные ARIA-атрибуты применяются только в состоянии одной задачи,
+   * где карточка не содержит вложенных интерактивных элементов.
+   * При count ≥ 2 навигацию обеспечивает явная кнопка «Открыть очередь».
+   */
+  const cardA11y =
+    count === 1
+      ? {
+          role: 'button' as const,
+          tabIndex: 0,
+          'aria-label': 'Открыть очередь генераций',
+          onKeyDown: (e: React.KeyboardEvent) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              navigate('/queue')
+            }
+          },
+        }
+      : {}
+
   return (
     <AnimatePresence>
       {count > 0 && (
@@ -31,16 +51,8 @@ export function StatusBar() {
         >
           <Card
             className="cursor-pointer p-4 shadow-xl transition hover:border-primary/50"
-            role="button"
-            tabIndex={0}
-            aria-label="Открыть очередь генераций"
             onClick={() => navigate('/queue')}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                navigate('/queue')
-              }
-            }}
+            {...cardA11y}
           >
             {count === 1 ? (
               <div className="flex items-center gap-3">

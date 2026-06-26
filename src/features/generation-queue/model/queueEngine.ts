@@ -49,6 +49,9 @@ export function tick(tasks: GenerationTask[], now: number): GenerationTask[] {
  * Создаёт движок очереди на одном интервале.
  * Тик выполняется только пока очередь готова (loadStatus === 'ready'):
  * при loading/error фоновая обработка задач не запускается.
+ * Тик также пропускается, пока очередь простаивает (нет running и нет queued):
+ * стор не трогается, чтобы избежать лишних ре-рендеров и записей в localStorage.
+ * Появление running/queued задачи (в т.ч. повторный запуск) подхватывается следующим тиком (≤ TICK_MS).
  */
 export function createEngine() {
   let timer: number | null = null
@@ -56,9 +59,12 @@ export function createEngine() {
     start() {
       if (timer !== null) return
       timer = window.setInterval(() => {
-        const state = useQueueStore.getState()
-        if (state.loadStatus !== 'ready') return
-        state.tickReplace(tick(state.tasks, Date.now()))
+        const { tasks, loadStatus, tickReplace } = useQueueStore.getState()
+        if (loadStatus !== 'ready') return
+        const runningCount = tasks.filter((t) => t.status === 'running').length
+        const hasQueued = tasks.some((t) => t.status === 'queued')
+        if (runningCount === 0 && !(hasQueued && runningCount < MAX_CONCURRENT)) return
+        tickReplace(tick(tasks, Date.now()))
       }, TICK_MS)
     },
     stop() {

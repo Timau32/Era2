@@ -24,7 +24,7 @@ export function TaskList({ tasks, allTasks, actions }: TaskListProps) {
     count: tasks.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => (isMobile ? 168 : 80),
-    overscan: 8,
+    overscan: 4,
     getItemKey: (i) => tasks[i].id,
   })
 

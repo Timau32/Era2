@@ -37,7 +37,7 @@ export function useQueue() {
       retry: useQueueStore((s) => s.retry),
       remove: useQueueStore((s) => s.remove),
       clearDone: useQueueStore((s) => s.clearDone),
-      restore: useQueueStore((s) => s.restore),
+      readd: useQueueStore((s) => s.readd),
       initLoad: useQueueStore((s) => s.initLoad),
       setStatusFilter: useQueueStore((s) => s.setStatusFilter),
       setTypeFilter: useQueueStore((s) => s.setTypeFilter),

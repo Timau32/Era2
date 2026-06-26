@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight, Loader2 } from 'lucide-react'
 import { useQueue } from '@/features/generation-queue/model/useQueue'
-import { Card, ModelPill } from '@/shared'
+import { Card, ModelPill, cn } from '@/shared'
 import { ProgressBar } from './ProgressBar'
 import { formatPercent } from '@/features/generation-queue/lib/formatEta'
 
@@ -31,11 +31,24 @@ export function StatusBar() {
         >
           <Card
             className="cursor-pointer p-4 shadow-xl transition hover:border-primary/50"
+            role="button"
+            tabIndex={0}
+            aria-label="Открыть очередь генераций"
             onClick={() => navigate('/queue')}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                navigate('/queue')
+              }
+            }}
           >
             {count === 1 ? (
               <div className="flex items-center gap-3">
-                <Loader2 size={18} className="animate-spin text-primary" aria-hidden />
+                <Loader2
+                  size={18}
+                  className={cn('text-primary', active[0].status === 'running' && 'animate-spin')}
+                  aria-hidden
+                />
                 <div className="min-w-0 flex-1">
                   <ModelPill model={active[0].model} />
                   <ProgressBar value={active[0].progress} className="mt-2" />
@@ -44,7 +57,7 @@ export function StatusBar() {
               </div>
             ) : (
               <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center">
                   <span className="text-sm font-medium">
                     Генерации идут · {count} активны · {formatPercent(avgProgress)}
                   </span>

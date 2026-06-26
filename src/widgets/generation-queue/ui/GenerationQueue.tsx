@@ -20,20 +20,26 @@ export function GenerationQueue() {
     onRetry: actions.retry,
     onDownload: () => showToast({ message: 'Скачивание (заглушка) начато' }),
     onRemove: (id) => {
-      const snapshot = tasks
+      const removed = tasks.find((t) => t.id === id)
       actions.remove(id)
-      showToast({ message: 'Задача удалена', actionLabel: 'Отменить', onAction: () => actions.restore(snapshot) })
+      showToast({
+        message: 'Задача удалена',
+        actionLabel: 'Отменить',
+        onAction: () => {
+          if (removed) actions.readd([removed])
+        },
+      })
     },
   }
 
   const onClearDone = () => {
     if (counts.done === 0) return
-    const snapshot = tasks
+    const cleared = tasks.filter((t) => t.status === 'done')
     actions.clearDone()
     showToast({
-      message: `Удалено готовых: ${counts.done}`,
+      message: `Удалено готовых: ${cleared.length}`,
       actionLabel: 'Отменить',
-      onAction: () => actions.restore(snapshot),
+      onAction: () => actions.readd(cleared),
     })
   }
 

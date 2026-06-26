@@ -8,11 +8,14 @@ function randomError(): string {
   return ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)]
 }
 
-/** Шаг прогресса за тик: чем длиннее durationMs, тем меньше шаг. */
+/**
+ * Шаг прогресса за тик: чем длиннее durationMs, тем меньше шаг.
+ * К базовому шагу добавляется случайный разброс (0.6–1.4×), чтобы прогресс выглядел живым.
+ */
 function progressStep(task: GenerationTask): number {
   const ticksToComplete = Math.max(1, task.durationMs / TICK_MS)
   const base = 100 / ticksToComplete
-  return base * (0.6 + Math.random() * 0.8) // разброс шага
+  return base * (0.6 + Math.random() * 0.8)
 }
 
 /**

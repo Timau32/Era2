@@ -24,8 +24,8 @@ interface QueueState {
   retry: (id: string) => void
   remove: (id: string) => void
   clearDone: () => void
-  /** Восстанавливает снимок задач (для Undo). */
-  restore: (snapshot: GenerationTask[]) => void
+  /** Повторно добавляет ранее удалённые задачи (для Undo), не затрагивая текущий прогресс остальных. */
+  readd: (items: GenerationTask[]) => void
   setStatusFilter: (v: StatusFilter) => void
   setTypeFilter: (v: TypeFilter) => void
   setSort: (v: SortOrder) => void
@@ -76,7 +76,7 @@ export const useQueueStore = create<QueueState>()(
 
       clearDone: () => set((s) => ({ tasks: s.tasks.filter((t) => t.status !== 'done') })),
 
-      restore: (snapshot) => set({ tasks: snapshot }),
+      readd: (items) => set((s) => ({ tasks: [...s.tasks, ...items] })),
 
       setStatusFilter: (v) => set({ statusFilter: v }),
       setTypeFilter: (v) => set({ typeFilter: v }),

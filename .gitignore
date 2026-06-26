@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# gitbash crash artifact
+*.stackdump
+
 # Superpowers SDD scratch
 .superpowers/
 

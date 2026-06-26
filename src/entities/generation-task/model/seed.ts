@@ -9,7 +9,7 @@ export const DURATION_BY_TYPE: Record<GenType, number> = {
 }
 
 /**
- * Стартовый датасет 10 задач: 2 running с прогрессом, queued, done, failed, canceled.
+ * Стартовый датасет 12 задач: 2 running с прогрессом, queued, done, failed, canceled.
  * @param now - текущее время (мс), передаётся снаружи для детерминизма.
  */
 export function createSeed(now: number): GenerationTask[] {
@@ -45,5 +45,7 @@ export function createSeed(now: number): GenerationTask[] {
     make(8, 'image', 'Иллюстрация лисы-астронавта в плоском стиле', 'Flux', 'done', { progress: 100, finishedAt: now - 120000, etaMs: 13000 }),
     make(9, 'audio', 'Фоновая музыка lo-fi для видео, 60 сек', 'Suno v4', 'queued'),
     make(10, 'video', 'Анимация логотипа с частицами, 3 сек', 'Runway Gen-3', 'failed', { error: 'Модель временно недоступна' }),
+    make(11, 'audio', 'Подкаст-джингл, динамичный, 10 сек', 'Suno v4', 'done', { progress: 100, finishedAt: now - 60000, etaMs: 22000 }),
+    make(12, 'text', 'Пост для Telegram-канала о запуске продукта', 'GPT-4o', 'queued'),
   ]
 }

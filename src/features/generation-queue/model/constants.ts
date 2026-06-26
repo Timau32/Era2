@@ -7,7 +7,7 @@ export const FAIL_RATE = 0.15
 /** Задержка эмуляции первичной загрузки, мс. */
 export const LOAD_DELAY_MS = 600
 /** Вероятность сбоя инициализации (для ErrorState). */
-export const INIT_FAIL_RATE = 0
+export const INIT_FAIL_RATE = 0.2
 /** Варианты текста ошибки. */
 export const ERROR_MESSAGES = [
   'Недостаточно кредитов',

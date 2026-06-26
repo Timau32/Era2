@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import type { GenerationTask, GenType, TaskStatus } from '@/entities/generation-task'
 import { createSeed } from '@/entities/generation-task'
 import { applyTransition } from './transitions'
-import { LOAD_DELAY_MS } from './constants'
+import { LOAD_DELAY_MS, INIT_FAIL_RATE } from './constants'
 
 type LoadStatus = 'idle' | 'loading' | 'ready' | 'error'
 export type StatusFilter = TaskStatus | 'all'
@@ -48,6 +48,11 @@ export const useQueueStore = create<QueueState>()(
         if (get().loadStatus === 'loading') return
         set({ loadStatus: 'loading' })
         window.setTimeout(() => {
+          /** Эмуляция сбоя инициализации: с вероятностью INIT_FAIL_RATE переходим в error без посева задач. */
+          if (Math.random() < INIT_FAIL_RATE) {
+            set({ loadStatus: 'error' })
+            return
+          }
           set((s) => ({
             loadStatus: 'ready',
             tasks: s.tasks.length > 0 ? s.tasks : createSeed(startNow),

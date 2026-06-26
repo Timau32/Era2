@@ -29,7 +29,7 @@ export function TaskList({ tasks, allTasks, actions }: TaskListProps) {
   })
 
   return (
-    <div ref={parentRef} className="max-h-[calc(100vh-320px)] overflow-y-auto [scrollbar-width:thin]">
+    <div ref={parentRef} className="scrollbar-themed max-h-[calc(100vh-320px)] overflow-y-auto">
       <div style={{ height: virtualizer.getTotalSize(), position: 'relative', width: '100%' }}>
         <AnimatePresence initial={false}>
           {virtualizer.getVirtualItems().map((vi) => {

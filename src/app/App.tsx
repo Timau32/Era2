@@ -1,4 +1,7 @@
-/** Корневой компонент приложения (роутер подключим в Task 12). */
+import { RouterProvider } from 'react-router-dom'
+import { router } from '@/app/providers/router'
+
+/** Корневой компонент: подключает роутер. */
 export function App() {
-  return <div className="p-8 font-mono text-primary">ERA2 boot ok</div>
+  return <RouterProvider router={router} />
 }
